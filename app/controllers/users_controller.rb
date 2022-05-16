@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :list_users, only: %i[ updateall ]
 
   # GET /users or /users.json
   def index
@@ -57,6 +58,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def updateall
+    updated_count = 0
+    @users.each do |user|
+      role = users_params[:users].dig(user.id.to_s, 'role')
+      next if user.role == role
+
+      user.update(role: role) && updated_count += 1
+    end
+
+    redirect_to users_path, notice: "updated records total: #{updated_count}"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -66,5 +79,13 @@ class UsersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :role)
+    end
+
+    def users_params
+      params.permit(users: :role)
+    end
+
+    def list_users
+      @users = User.where(id: users_params[:users].keys)
     end
 end

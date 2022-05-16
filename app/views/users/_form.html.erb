@@ -18,7 +18,7 @@
 
   <div>
     <%= form.label :role, style: "display: block" %>
-    <%= form.number_field :role %>
+    <%= form.select :role, User.roles.keys %>
   </div>
 
   <div>

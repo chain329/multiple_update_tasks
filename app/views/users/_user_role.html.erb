@@ -1,0 +1,15 @@
+<div id="<%= dom_id ff.object %>" style="display: flex;column-gap: 1rem;">
+  <p>
+    <strong>Name:</strong>
+    <%= ff.object.name %>
+  </p>
+
+  <p>
+    <strong>Role:</strong>
+    <%= ff.select :role, User.roles.keys %>
+  </p>
+
+  <p>
+    <%= link_to "Show this user", ff.object %>
+  </p>
+</div>
